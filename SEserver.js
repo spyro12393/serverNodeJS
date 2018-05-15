@@ -20,8 +20,71 @@ mc.connect();
 app.get('/', function (req, res) {
     return res.send({ error: true, message: 'hello world' })
 });
- 
-// Get user information
+
+// Parent Register
+app.post('/parent/register', function (req, res) {
+	
+	/*
+	let phone = req.body.phone;
+	let password = req.body.password;
+	let name = req.body.name;
+	let gender = req.body.gender;
+	let year = req.body.year;
+	*/
+	let P_Account = req.body.P_Account;
+	let P_Password = req.body.P_Password;
+	let P_Name = req.body.P_Name;
+	
+	let queryParams = [,P_Account, P_Password, P_Name];
+	console.log('Sending...');
+	mc.query('INSERT INTO Parent VALUES (?,?,?,?)', queryParams, function(err, results){
+		if (err) throw err;
+		return res.send({error:false});		
+	});
+});
+
+/* Parent Login
+app.post('/parent/login', function (req, res) {
+	
+	let P_Account = req.body.P_Account;
+	let P_Password = req.body.P_Password;
+	let queryParams = [P_Account, P_Password]
+
+	mc.query('SELECT COUNT(P_Account) as count FROM Parent WHERE P_Account = ? AND P_Password = ?', queryParams, function(err, results) {
+		if (err) throw err;
+		if(results[0].count === 0){
+			return res.send({isUsed:false});		
+		}
+		else{
+			return res.send({isUsed:true});
+		}
+	});
+});*/
+
+app.post('/parent/login', function (req, res) {
+	
+	let P_Account = req.body.P_Account;
+	let P_Password = req.body.P_Password;
+	
+	let queryParams = [P_Account,P_Password];
+    
+	mc.query('SELECT COUNT(P_Account) as count FROM Parent WHERE P_Account = ? AND P_Password = ?',queryParams, function(err, results) {
+		if (err) throw err;
+		if(results[0].count === 1){
+			mc.query('SELECT Pid, P_Name FROM Parent WHERE P_Account = ? AND P_Password = ?',queryParams,function(err, results) {
+				if (err) throw err;
+				let body = results[0];
+				body.error = false;
+				return res.send(body);
+			});
+		}
+		else{
+			return res.send({error:true});
+		}
+	});
+});
+
+/* Get user information
 app.post('/user/login', function (req, res) {
 	
 	let phone = req.body.phone;
@@ -44,6 +107,8 @@ app.post('/user/login', function (req, res) {
 		}
 	});
 });
+*/
+
 
 // Check phone is used or not
 app.post('/user/checkPhone', function (req, res) {
