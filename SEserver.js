@@ -24,13 +24,6 @@ app.get('/', function (req, res) {
 // Parent Register
 app.post('/parent/register', function (req, res) {
 	
-	/*
-	let phone = req.body.phone;
-	let password = req.body.password;
-	let name = req.body.name;
-	let gender = req.body.gender;
-	let year = req.body.year;
-	*/
 	let P_Account = req.body.P_Account;
 	let P_Password = req.body.P_Password;
 	let P_Name = req.body.P_Name;
@@ -42,24 +35,6 @@ app.post('/parent/register', function (req, res) {
 		return res.send({error:false});		
 	});
 });
-
-/* Parent Login
-app.post('/parent/login', function (req, res) {
-	
-	let P_Account = req.body.P_Account;
-	let P_Password = req.body.P_Password;
-	let queryParams = [P_Account, P_Password]
-
-	mc.query('SELECT COUNT(P_Account) as count FROM Parent WHERE P_Account = ? AND P_Password = ?', queryParams, function(err, results) {
-		if (err) throw err;
-		if(results[0].count === 0){
-			return res.send({isUsed:false});		
-		}
-		else{
-			return res.send({isUsed:true});
-		}
-	});
-});*/
 
 app.post('/parent/login', function (req, res) {
 	
@@ -107,8 +82,6 @@ app.post('/user/login', function (req, res) {
 		}
 	});
 });
-*/
-
 
 // Check phone is used or not
 app.post('/user/checkPhone', function (req, res) {
@@ -329,7 +302,6 @@ app.get('/sport', function (req, res) {
 app.all("*", function (req, res, next) {
     return res.send('page not found');
     next();
-});
- 
+});*/
 app.listen(3000);
 console.log('Node app is running on port 3000');
